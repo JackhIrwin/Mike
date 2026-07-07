@@ -13,15 +13,15 @@ import os
 import time
 from contextlib import contextmanager
 
-import psycopg2
-import psycopg2.extras
+import psycopg
+from psycopg.rows import dict_row
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 
 
 @contextmanager
 def get_conn():
-    conn = psycopg2.connect(DATABASE_URL, cursor_factory=psycopg2.extras.RealDictCursor)
+    conn = psycopg.connect(DATABASE_URL, row_factory=dict_row)
     try:
         yield conn
         conn.commit()
